@@ -6,8 +6,8 @@ export type OpenMetereologyResponse = {
   timezone: string;
   timezone_abbreviation: string;
   elevation: number;
-  daily_units?: Record<string, string>;
-  daily?: Record<string, Array<unknown>>;
-  hourly_units?: Record<string, string>;
-  hourly?: Record<string, Array<unknown>>;
+  daily_units?: { time: "iso8601" } & Record<string, string>;
+  daily?: { time: Array<string> } & Record<string, Array<unknown>>;
+  hourly_units?: { time: "iso8601" } & Record<string, string>;
+  hourly?: { time: Array<string> } & Record<string, Array<unknown>>;
 }
