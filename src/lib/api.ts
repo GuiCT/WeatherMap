@@ -34,7 +34,7 @@ export class OpenMetereologyApi {
 
   public async getForecast() {
     const result = await OpenMetereologyApi.axiosInstance.get(
-      `/forecast?daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1&latitude=${this.latitude}&longitude=${this.longitude}`
+      `/forecast?daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7&latitude=${this.latitude}&longitude=${this.longitude}`
     );
     if (result.status === 200) {
       return result.data as OpenMetereologyResponse;

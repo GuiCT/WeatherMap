@@ -1,7 +1,18 @@
+import { browser } from "$app/environment";
 import type { GeoCodingEntry } from "$lib/dto/geocoding.dto";
 import { writable } from "svelte/store";
 
-const _citiesStore = writable<Array<GeoCodingEntry>>([]);
+let storeInitialValue: Array<GeoCodingEntry> = [];
+if (browser) {
+  const citiesFromLocalStorage = localStorage.getItem("cities");
+  storeInitialValue = JSON.parse(citiesFromLocalStorage ?? "[]");
+}
+const _citiesStore = writable<Array<GeoCodingEntry>>(storeInitialValue);
+_citiesStore.subscribe((value) => {
+  if (browser) {
+    localStorage.setItem("cities", JSON.stringify(value));
+  }
+});
 
 export const citiesStore = {
   subscribe: _citiesStore.subscribe,
