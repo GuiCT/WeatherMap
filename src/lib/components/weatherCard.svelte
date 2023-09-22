@@ -24,9 +24,29 @@
 			}
 		);
 	});
+
+	function mapTemperatureToClass(temperature: number): 'veryhot' | 'hot' | 'warm' | 'cold' | 'verycold' {
+		if (temperature > 35) {
+			return 'veryhot';
+		}
+
+		if (temperature > 25) {
+			return 'hot';
+		}
+
+		if (temperature > 15) {
+			return 'warm';
+		}
+
+		if (temperature > 5) {
+			return 'cold';
+		}
+
+		return 'verycold';
+	}
 </script>
 
-<div>
+<div class="box">
 	<h1>{geoCode.name}</h1>
 	{#if !weatherData}
 		{#if loading}
@@ -35,10 +55,40 @@
 			<h2>Não foi possível carregar as informações.</h2>
 		{/if}
 	{:else}
-		{#each Array(weatherData.daily?.time.length ?? 0) as _, idx}
-			<h2>{weatherData.daily?.time[idx]}</h2>
-			<p>Mínima: {weatherData.daily?.temperature_2m_min[idx]} °C</p>
-			<p>Máxima: {weatherData.daily?.temperature_2m_max[idx]} °C</p>
-		{/each}
+		<table>
+			<thead>
+				<tr>
+					{#each Object.keys(weatherData.daily ?? {}) as key}
+						<th>{key}</th>
+					{/each}
+				</tr>
+			</thead>
+			<tbody>
+				{#each Array(weatherData.daily?.time.length ?? 0) as _, idx}
+					<tr>
+						{#each Object.keys(weatherData.daily ?? {}) as key}
+							<td>{weatherData.daily?.[key][idx]}</td>
+						{/each}
+					</tr>
+				{/each}
+			</tbody>
+		</table>		
 	{/if}
 </div>
+
+<style lang="scss">
+	.box {
+		padding: 20px;
+		box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.33);
+		min-width: fit-content;
+		max-width: 40%;
+
+		h1 {
+			margin: 0;
+		}
+	}
+
+	td {
+		text-align: center;
+	}
+</style>

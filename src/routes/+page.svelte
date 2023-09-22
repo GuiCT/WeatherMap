@@ -41,6 +41,20 @@
 	<button on:click={addToList}>Get Forecast!</button>
 {/if}
 <br />
-{#each $citiesStore as storeEntry}
-	<WeatherCard geoCode={storeEntry} />
-{/each}
+<div class="content">
+	{#each $citiesStore as storeEntry}
+		<WeatherCard geoCode={storeEntry} />
+	{/each}
+</div>
+
+<style lang="scss">
+	.content {
+		margin-top: 20px;
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
+		flex-wrap: wrap;
+		justify-content: center;
+		width: 100%;
+	}
+</style>
