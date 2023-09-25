@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { OpenMetereologyApi } from '$lib/api';
 	import type { GeoCodingEntry } from '$lib/dto/geocoding.dto';
-	import { mapMetricName, transformMetric, type OpenMetereologyResponse } from '$lib/dto/open-meteorology.dto';
+	import {
+		mapMetricName,
+		transformMetric,
+		type OpenMetereologyResponse
+	} from '$lib/dto/open-meteorology.dto';
 	import { onMount } from 'svelte';
 
 	export let geoCode: GeoCodingEntry;
 	let openMeteoreologyApiInstance: OpenMetereologyApi;
 	let weatherData: OpenMetereologyResponse | undefined;
 	let loading: boolean = true;
+	let forecastDays: number = 7;
 
 	onMount(async () => {
 		openMeteoreologyApiInstance = new OpenMetereologyApi(geoCode.latitude, geoCode.longitude);
@@ -25,20 +30,41 @@
 		);
 	});
 
+	const refresh = async () => {
+		openMeteoreologyApiInstance.forecastDays = forecastDays;
+		loading = true;
+		weatherData = await openMeteoreologyApiInstance.getForecast().then(
+			(response) => {
+				loading = false;
+				return response;
+			},
+			(error) => {
+				loading = false;
+				console.error(error);
+				return undefined;
+			}
+		);
+	};
+
 	// !ATIVIDADES
 	// Atividades para o mini curso:
-	// 1 - Implementar a remoção de cidades da lista a partir de um ícone localizado no card.
-	// 2 - Permitir alterar a quantidade de dias de previsão do tempo a partir de um input localizado no card.
-	// Também implementar a atualização da previsão do tempo a partir do novo valor.
 	// 3 - Utilizar bloco await ao invés de onMount para carregar as informações.
-	// import Trash from 'virtual:icons/bi/trash'; // -> Ícone bootstrap para remoção
-	// import Refresh from 'virtual:icons/bi/arrow-counterclockwise' // -> Ícone bootstrap para atualização
+	import Trash from 'virtual:icons/bi/trash'; // -> Ícone bootstrap para remoção
+	import Refresh from 'virtual:icons/bi/arrow-counterclockwise'; // -> Ícone bootstrap para atualização
+	import { citiesStore } from '$lib/stores/cities.store';
 </script>
 
 <div class="box">
-	<div>
+	<div class="row">
 		<h1>{geoCode.name}</h1>
-
+		<input type="range" min="1" max="16" bind:value={forecastDays} />
+		{forecastDays}
+		<button class="color-white" on:click={refresh}>
+			<Refresh />
+		</button>
+		<button class="color-white" on:click={() => citiesStore.deleteById(geoCode.id)}>
+			<Trash />
+		</button>
 	</div>
 	{#if !weatherData}
 		{#if loading}
@@ -83,8 +109,19 @@
 	table {
 		margin-top: 20px;
 	}
-	td, th {
+	td,
+	th {
 		text-align: center;
 		padding: 0 50px 0 0;
+	}
+
+	.row {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.color-white {
+		color: #ffffff;
 	}
 </style>

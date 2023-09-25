@@ -35,6 +35,7 @@
 	<div class="row-spaced">
 		<input bind:value={nameInput} />
 		<button on:click={searchCity}><Search /></button>
+		<button on:click={citiesStore.clear}> Reset </button>
 	</div>
 	{#if geoCodingValues.length > 0}
 		<div class="row-spaced">

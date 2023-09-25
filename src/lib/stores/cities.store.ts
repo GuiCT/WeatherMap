@@ -14,10 +14,6 @@ _citiesStore.subscribe((value) => {
   }
 });
 
-// !ATIVIDADES
-// Atividades para o mini curso
-// Utilizar a função deleteById para remover uma cidade da lista
-// Utilizar a função clear para limpar a lista de cidades
 export const citiesStore = {
   subscribe: _citiesStore.subscribe,
   addEntry: (newEntry: GeoCodingEntry) => {
