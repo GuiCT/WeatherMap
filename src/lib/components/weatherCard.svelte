@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { OpenMetereologyApi } from '$lib/api';
 	import type { GeoCodingEntry } from '$lib/dto/geocoding.dto';
-	import type { OpenMetereologyResponse } from '$lib/dto/open-meteorology.dto';
+	import { mapMetricName, transformMetric, type OpenMetereologyResponse } from '$lib/dto/open-meteorology.dto';
 	import { onMount } from 'svelte';
 
 	export let geoCode: GeoCodingEntry;
@@ -51,7 +51,7 @@
 			<thead>
 				<tr>
 					{#each Object.keys(weatherData.daily ?? {}) as key}
-						<th>{key}</th>
+						<th>{mapMetricName(key)}</th>
 					{/each}
 				</tr>
 			</thead>
@@ -59,7 +59,7 @@
 				{#each Array(weatherData.daily?.time.length ?? 0) as _, idx}
 					<tr>
 						{#each Object.keys(weatherData.daily ?? {}) as key}
-							<td>{weatherData.daily?.[key][idx]}</td>
+							<td>{transformMetric(key, weatherData.daily?.[key][idx])}</td>
 						{/each}
 					</tr>
 				{/each}
@@ -80,7 +80,11 @@
 		}
 	}
 
-	td {
+	table {
+		margin-top: 20px;
+	}
+	td, th {
 		text-align: center;
+		padding: 0 50px 0 0;
 	}
 </style>
