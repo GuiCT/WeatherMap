@@ -25,11 +25,14 @@
 		);
 	});
 
+	// !ATIVIDADES
 	// Atividades para o mini curso:
 	// 1 - Implementar a remoção de cidades da lista a partir de um ícone localizado no card.
 	// 2 - Permitir alterar a quantidade de dias de previsão do tempo a partir de um input localizado no card.
 	// Também implementar a atualização da previsão do tempo a partir do novo valor.
 	// 3 - Utilizar bloco await ao invés de onMount para carregar as informações.
+	// import Search from 'virtual:icons/bi/search'; // -> Ícone bootstrap para remoção
+	// import Refresh from 'virtual:icons/bi/arrow-counterclockwise' // -> Ícone bootstrap para atualização
 </script>
 
 <div class="box">
