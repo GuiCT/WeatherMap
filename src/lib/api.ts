@@ -26,26 +26,17 @@ export class OpenMetereologyApi {
   });
   readonly latitude: number;
   readonly longitude: number;
-  private _forecastDays: number = 7;
+  readonly forecastDays: number;
 
-  public constructor(latitude: number, longitude: number) {
+  public constructor(latitude: number, longitude: number, forecastDays: number) {
     this.latitude = latitude;
     this.longitude = longitude;
-  }
-
-  public set forecastDays(days: number) {
-    if (days > 0 && days <= 16) {
-      this._forecastDays = days;
-    }
-  }
-
-  public get forecastDays() {
-    return this._forecastDays;
+    this.forecastDays = forecastDays;
   }
 
   public async getForecast() {
     const result = await OpenMetereologyApi.axiosInstance.get(
-      `/forecast?daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${this._forecastDays}&latitude=${this.latitude}&longitude=${this.longitude}`
+      `/forecast?daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${this.forecastDays}&latitude=${this.latitude}&longitude=${this.longitude}`
     );
     if (result.status === 200) {
       return result.data as OpenMetereologyResponse;
