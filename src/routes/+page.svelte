@@ -31,6 +31,10 @@
 	};
 </script>
 
+<head>
+	<title>Previsão do tempo</title>
+</head>
+
 <main>
 	<div class="row-spaced">
 		<input bind:value={nameInput} />
